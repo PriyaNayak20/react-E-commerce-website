@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { useCart } from './CartContext'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface Product {
   id: number
@@ -9,11 +12,14 @@ interface Product {
   price: number
   rating: number
   images: string[]
+  quantity: number
 }
+
 export const ProductPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [product, setProduct] = useState<Product | null>(null)
+  const { cartItems, addToCart, removeFromCart } = useCart()
 
   useEffect(() => {
     if (id) {
@@ -28,9 +34,26 @@ export const ProductPage = () => {
     }
   }, [id])
 
-  if (!product) {
-    return <h1>Loding...</h1>
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product)
+      toast.success('Item added to cart!')
+    }
   }
+
+  const handleRemoveFromCart = () => {
+    if (product) {
+      removeFromCart(product.id)
+      toast.info('Item removed from cart!')
+    }
+  }
+
+  const isInCart = product && cartItems.some((item) => item.id === product.id)
+
+  if (!product) {
+    return <h1>Loading...</h1>
+  }
+
   return (
     <div className="p-5 w-[60%]">
       <button
@@ -51,8 +74,14 @@ export const ProductPage = () => {
       <div className="flex">
         <p>Price : ${product.price}</p>
         <p className="ml-10">Rating: {product.rating}</p>
-        <button>Add to cart</button>
       </div>
+
+      <button
+        onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
+        className="mt-5 px-4 py-2 bg-black text-white rounded"
+      >
+        {isInCart ? 'Remove from Cart' : 'Add to Cart'}
+      </button>
     </div>
   )
 }

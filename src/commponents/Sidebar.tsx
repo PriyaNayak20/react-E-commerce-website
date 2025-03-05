@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useFilter } from './FilterContext'
+import { FaShoppingCart } from 'react-icons/fa'
+import { useCart } from './CartContext'
 
 interface Product {
   category: string
@@ -10,6 +13,7 @@ interface FetchResponse {
 }
 
 const Sidebar = () => {
+  const navigate = useNavigate()
   const {
     searchQuery,
     setSearchQuery,
@@ -22,6 +26,7 @@ const Sidebar = () => {
     keyword,
     setKeyword,
   } = useFilter()
+  const { cartItems } = useCart()
   const [categories, setCategories] = useState<string[]>([])
   const [keywords] = useState<string[]>([
     'apple',
@@ -77,7 +82,15 @@ const Sidebar = () => {
 
   return (
     <div className="w-64 p-5 h-screen">
-      <h1 className="text-2xl font-bold mb-10 mt-4">ShopEase</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold mb-10 mt-4">ShopEase</h1>
+        <div className="relative" onClick={() => navigate('/cart')}>
+          <FaShoppingCart className="text-black text-2xl cursor-pointer" />
+          <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-1">
+            {cartItems.length}
+          </span>
+        </div>
+      </div>
 
       <section>
         <input
