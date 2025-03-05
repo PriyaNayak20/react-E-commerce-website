@@ -62,12 +62,12 @@ const MainContent = () => {
     }
 
     switch (filter) {
-      case ' expensive':
+      case 'Expensive':
         return filteredProducts.sort((a, b) => b.price - a.price)
 
-      case 'cheap':
+      case 'Cheap':
         return filteredProducts.sort((a, b) => a.price - b.price)
-      case 'popular':
+      case 'Popular':
         return filteredProducts.sort((a, b) => b.rating - a.rating)
 
       default:
@@ -121,7 +121,7 @@ const MainContent = () => {
             {dropdownOpen && (
               <div className="absolute bg-white border-gray-300 rounded mt-2 w-full sm:w-40">
                 <button
-                  onClick={() => setFilter('cheap')}
+                  onClick={() => setFilter('Cheap')}
                   className="block px-4 py-2 w-full text-left hover:bg-gray-200"
                 >
                   Cheap
