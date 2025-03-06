@@ -23,7 +23,6 @@ const Sidebar = () => {
     setMinPrice,
     maxPrice,
     setMaxPrice,
-    keyword,
     setKeyword,
   } = useFilter()
   const { cartItems } = useCart()
